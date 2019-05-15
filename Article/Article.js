@@ -29,7 +29,51 @@ class Article {
 
 */
 
-const $articles = document.querySelectorAll(".article").forEach($article => {
-    // This seems pointless...
-    const article = new Article($article)
+NodeList.prototype.map = Array.prototype.map
+
+const $articlesContainer = document.querySelector(".articles")
+const $existingArticles = [
+    document.querySelectorAll(".article").map($a => new Article($a))
+]
+
+const create$Article = ({
+    heading = "Heading",
+    date = new Date(),
+    content = ["sdfs", "sdf4"]
+}) => {
+    const $article = document.createElement("div")
+    $article.classList.add("article")
+
+    const $h2 = document.createElement("h2")
+    $h2.textContent = heading
+
+    const $paragraphs = content.map(p => {
+        const $p = document.createElement("p")
+        $p.textContent = p
+        return $p
+    })
+
+    $article.appendChild($h2)
+    $paragraphs.forEach($p => {
+        $article.appendChild($p)
+    })
+
+    const $btn = document.createElement("span")
+    $btn.classList.add("expandButton")
+
+    $article.appendChild($btn)
+
+    return $article
+}
+
+const $newArticles = [
+    create$Article("Title", new Date(), [
+        "blahhahsdlkjf;lasdkfj",
+        "asldkfj2323jlkjfas"
+    ])
+]
+
+$newArticles.forEach($article => {
+    $articlesContainer.appendChild($article)
+    new Article($article)
 })
